@@ -1,0 +1,25 @@
+---
+import Base from '../../layouts/Base.astro';
+import ContractGuide from '../../components/ContractGuide.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import { site } from '../../site';
+---
+<Base title="About" description={site.description} active="about">
+  <section class="section">
+    <div class="wrap">
+      <SectionHeader eyebrow="About" title="설계부터 운영까지">
+        <p class="lead">{site.description} 작은 팀이지만, 맡은 서비스의 지연 시간과 장애율을 끝까지 책임집니다.</p>
+      </SectionHeader>
+      <ContractGuide />
+      <div class="cta">
+        <a class="btn btn-primary" href="/#contact">프로젝트 문의 <span class="chev" aria-hidden="true">›</span></a>
+        <a class="btn btn-secondary" href="/projects/">포트폴리오 보기</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lead { font-size: 19px; line-height: 32px; color: var(--ink-muted); margin-top: var(--space-8); }
+  .cta { display: flex; flex-wrap: wrap; gap: var(--space-16); margin-top: var(--space-40); }
+</style>

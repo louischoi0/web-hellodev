@@ -1,0 +1,68 @@
+/* Personal Brand design system tokens. Source: the design system's tokens.json. */
+:root {
+  --surface-100: #ffffff;
+  --surface-200: #ffffff;
+  --line: #e3e8f2;
+  --ink: #0f1b3d;
+  --ink-muted: #3d4a6b;
+  --navy: #1a2b5f;
+  --orange: #ff7a1a;
+  --on-orange: #0f1b3d;
+  --orange-ink: #b34a06;
+  --orange-tint: #fff1e6;
+  /* Text on the navy band: light in both themes. */
+  --on-navy: #ffffff;
+  --on-navy-muted: #c9d2ea;
+
+  --font-display: Sora, 'IBM Plex Sans KR', system-ui, sans-serif;
+  --font-sans: 'IBM Plex Sans KR', system-ui, -apple-system, 'Apple SD Gothic Neo', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-40: 40px;
+  --space-64: 64px;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-pill: 999px;
+
+  --content-max: 1120px;
+  --text-max: 40rem;
+  --header-h: 64px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --surface-100: #0b1430;
+    --surface-200: #121e42;
+    --line: #24315a;
+    --ink: #eef1f8;
+    --ink-muted: #bcc5de;
+    --navy: #22397a;
+    --orange: #ff8a33;
+    --orange-ink: #ffa05c;
+    --orange-tint: #3a2210;
+    --on-navy: #eef1f8;
+    --on-navy-muted: #c9d2ea;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --surface-100: #0b1430;
+  --surface-200: #121e42;
+  --line: #24315a;
+  --ink: #eef1f8;
+  --ink-muted: #bcc5de;
+  --navy: #22397a;
+  --orange: #ff8a33;
+  --orange-ink: #ffa05c;
+  --orange-tint: #3a2210;
+  --on-navy: #eef1f8;
+  --on-navy-muted: #c9d2ea;
+  color-scheme: dark;
+}

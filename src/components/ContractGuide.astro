@@ -1,0 +1,54 @@
+---
+const steps = [
+  { title: '2주 무료 협업', body: 'FDE가 현장에 합류해 실제 업무를 함께 진행합니다. 비용은 없습니다.' },
+  { title: '범위와 마일스톤 합의', body: '프로젝트를 마일스톤으로 나누고, 마일스톤마다 결과물과 금액을 정합니다.' },
+  { title: '계약 체결, 계약금 7%', body: '프로젝트별로 계약합니다. 계약금은 전체 금액의 7%입니다.' },
+  { title: '마일스톤별 납입', body: '남은 금액은 마일스톤이 끝날 때마다 나누어 납입합니다.' },
+];
+const terms = [
+  { head: '최소화된 계약금 7%', body: '처음 시작하는 부담을 줄이기 위해 계약금은 전체 금액의 7%로 낮췄습니다.' },
+  { head: '마일스톤별 납입', body: '결과물을 확인한 뒤 다음 금액을 납입합니다. 확인하지 않은 작업의 비용은 먼저 내지 않습니다.' },
+  { head: '위약금 없는 중도 해지', body: '마일스톤이 끝나는 시점에는 언제든 계약을 해지할 수 있고, 위약금은 없습니다.' },
+];
+---
+<div class="guide">
+  <ol class="steps">
+    {steps.map((s) => (
+      <li>
+        <h3>{s.title}</h3>
+        <p>{s.body}</p>
+      </li>
+    ))}
+  </ol>
+  <dl class="terms">
+    {terms.map((t) => (
+      <div>
+        <dt>{t.head}</dt>
+        <dd>{t.body}</dd>
+      </div>
+    ))}
+  </dl>
+</div>
+
+<style>
+  .guide { display: grid; gap: var(--space-40); }
+  .steps { display: grid; gap: var(--space-24); margin: 0; padding: 0; list-style: none; counter-reset: step; }
+  @media (min-width: 768px) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .steps li { counter-increment: step; display: grid; gap: var(--space-8); align-content: start; padding-top: var(--space-16); border-top: 1px solid var(--line); }
+  .steps li::before {
+    content: counter(step);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 500;
+    color: var(--orange-ink);
+  }
+  .steps h3 { font-size: 19px; line-height: 27px; }
+  .steps p { color: var(--ink-muted); }
+
+  .terms { display: grid; gap: var(--space-24); margin: 0; padding: var(--space-24) 0; border-top: 2px solid var(--orange); }
+  @media (min-width: 768px) { .terms { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-40); } }
+  .terms div { display: grid; gap: var(--space-8); align-content: start; }
+  .terms dt { font-family: var(--font-display); font-size: 22px; line-height: 30px; font-weight: 600; color: var(--ink); text-wrap: balance; }
+  .terms dd { margin: 0; color: var(--ink-muted); }
+</style>

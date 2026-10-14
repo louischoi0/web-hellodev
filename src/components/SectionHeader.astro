@@ -1,0 +1,17 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+}
+const { eyebrow, title } = Astro.props;
+---
+<header class="section-header">
+  <p class="label eyebrow">{eyebrow}</p>
+  <h2>{title}</h2>
+  <slot />
+</header>
+
+<style>
+  .section-header { display: grid; gap: var(--space-8); margin-bottom: var(--space-40); max-width: var(--text-max); }
+  .eyebrow { color: var(--orange-ink); }
+</style>

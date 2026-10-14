@@ -1,0 +1,98 @@
+@import './tokens.css';
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--header-h) + var(--space-24)); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--surface-100);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 29px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { margin: 0; font-family: var(--font-display); text-wrap: balance; color: var(--ink); }
+.display { font-size: 56px; line-height: 60px; font-weight: 700; letter-spacing: -0.02em; }
+h2, .h2 { font-size: 32px; line-height: 40px; font-weight: 600; letter-spacing: -0.01em; }
+h3, .h3 { font-size: 22px; line-height: 30px; font-weight: 600; }
+p { margin: 0; }
+.body-sm { font-size: 15px; line-height: 24px; }
+.muted { color: var(--ink-muted); }
+.label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 639px) {
+  .display { font-size: 40px; line-height: 46px; }
+  h2, .h2 { font-size: 26px; line-height: 34px; }
+}
+
+a { color: var(--orange-ink); text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; border-radius: var(--radius-sm); }
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--content-max) + 2 * var(--space-40));
+  margin-inline: auto;
+  padding-left: max(var(--space-16), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--space-16), env(safe-area-inset-right, 0px));
+}
+@media (min-width: 960px) {
+  .wrap { padding-left: var(--space-40); padding-right: var(--space-40); }
+}
+
+.section { padding-block: var(--space-64); }
+@media (max-width: 639px) { .section { padding-block: 40px; } }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-height: 44px;
+  padding: 0 var(--space-24);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 150ms ease-out, background-color 150ms ease-out;
+}
+.btn:hover { text-decoration: none; transform: translateY(-1px); }
+.btn-primary { background: var(--orange); color: var(--on-orange); }
+.btn-secondary { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn-secondary:hover { border-color: var(--ink-muted); }
+.btn .chev { font-family: var(--font-display); font-weight: 700; }
+
+.tags { display: flex; flex-wrap: wrap; gap: var(--space-8); margin: 0; padding: 0; list-style: none; }
+.tag {
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-sm);
+  background: var(--orange-tint);
+  color: var(--orange-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* Scroll-in effect (see Base.astro). Elements get .reveal only when JS runs and they start below the fold. */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 500ms ease-out, transform 500ms ease-out;
+}
+.reveal.in { opacity: 1; transform: none; }

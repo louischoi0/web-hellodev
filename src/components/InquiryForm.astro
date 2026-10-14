@@ -1,0 +1,86 @@
+---
+const sizes = ['1~10명', '11~50명', '51~200명', '201~1000명', '1000명 이상'];
+---
+<form class="form" id="inquiry-form" novalidate>
+  <div class="field">
+    <label for="size">회사 규모</label>
+    <select id="size" name="size" required>
+      <option value="" disabled selected>선택해 주세요</option>
+      {sizes.map((s) => <option value={s}>{s}</option>)}
+    </select>
+  </div>
+  <div class="field">
+    <label for="role">직무</label>
+    <input id="role" name="role" type="text" autocomplete="organization-title" placeholder="예: 대표, CTO, 개발 총괄" maxlength="100" required />
+  </div>
+  <div class="field">
+    <label for="message">문의 내용</label>
+    <textarea id="message" name="message" rows="5" placeholder="해결하고 싶은 문제나 만들고 싶은 서비스를 적어 주세요." maxlength="4000" required></textarea>
+  </div>
+  <div class="field">
+    <label for="email">이메일</label>
+    <input id="email" name="email" type="email" autocomplete="email" placeholder="답장을 받을 이메일 주소" maxlength="200" required />
+  </div>
+  <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  <div class="actions">
+    <button class="btn btn-primary" type="submit">문의 보내기 <span class="chev" aria-hidden="true">›</span></button>
+    <p class="status body-sm" role="status" aria-live="polite"></p>
+  </div>
+</form>
+
+<script>
+  const form = document.getElementById('inquiry-form') as HTMLFormElement | null;
+  if (form) {
+    const status = form.querySelector('.status') as HTMLElement;
+    const button = form.querySelector('button') as HTMLButtonElement;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      status.classList.remove('error');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      button.disabled = true;
+      status.textContent = '보내는 중입니다.';
+      try {
+        const res = await fetch('/api/inquiry', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(form))),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(body.error || '전송하지 못했습니다.');
+        form.reset();
+        status.textContent = '접수했습니다. 입력하신 이메일로 보통 이틀 안에 답장드립니다.';
+      } catch (err) {
+        status.classList.add('error');
+        status.textContent = err instanceof Error ? err.message : '전송하지 못했습니다. 잠시 후 다시 시도해 주세요.';
+      } finally {
+        button.disabled = false;
+      }
+    });
+  }
+</script>
+
+<style>
+  .form { display: grid; gap: var(--space-24); width: 100%; max-width: 32rem; }
+  .field { display: grid; gap: var(--space-8); }
+  label { font-weight: 600; color: var(--on-navy); }
+  input, select, textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: var(--space-8) var(--space-16);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+    background: var(--surface-200);
+    color: var(--ink);
+    font: inherit;
+  }
+  textarea { resize: vertical; min-height: 140px; padding-block: var(--space-16); }
+  input::placeholder, textarea::placeholder { color: var(--ink-muted); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-16); }
+  .btn:disabled { opacity: 0.6; cursor: wait; transform: none; }
+  .status { color: var(--on-navy-muted); margin: 0; }
+  .status.error { color: var(--on-navy); font-weight: 600; }
+</style>

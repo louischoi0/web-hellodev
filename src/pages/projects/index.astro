@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Projects" description="헬로월드가 수행한 프로젝트" active="projects">
+  <section class="section">
+    <div class="wrap">
+      <SectionHeader eyebrow="Projects" title="포트폴리오">
+        <p class="muted">모든 프로젝트는 시작 전에 정한 목표 수치와 실제 결과를 함께 기록합니다.</p>
+      </SectionHeader>
+      <ProjectGrid projects={projects} />
+    </div>
+  </section>
+</Base>

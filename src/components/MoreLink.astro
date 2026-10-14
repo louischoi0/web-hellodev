@@ -1,0 +1,12 @@
+---
+interface Props {
+  href: string;
+}
+const { href } = Astro.props;
+---
+<a class="more" href={href}><slot /> <span aria-hidden="true">›</span></a>
+
+<style>
+  .more { display: inline-block; margin-top: var(--space-24); font-weight: 600; text-decoration: none; }
+  .more:hover { text-decoration: underline; }
+</style>
