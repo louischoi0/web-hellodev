@@ -88,11 +88,3 @@ a:hover { text-decoration-thickness: 2px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
-
-/* Scroll-in effect (see Base.astro). Elements get .reveal only when JS runs and they start below the fold. */
-.reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 500ms ease-out, transform 500ms ease-out;
-}
-.reveal.in { opacity: 1; transform: none; }

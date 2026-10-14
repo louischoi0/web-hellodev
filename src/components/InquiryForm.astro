@@ -51,7 +51,7 @@ const sizes = ['1~10명', '11~50명', '51~200명', '201~1000명', '1000명 이�
         const body = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(body.error || '전송하지 못했습니다.');
         form.reset();
-        status.textContent = '접수했습니다. 입력하신 이메일로 보통 이틀 안에 답장드립니다.';
+        status.textContent = '접수했습니다. 확인 후 입력하신 이메일로 답장드립니다. 보통 당일 연락드립니다.';
       } catch (err) {
         status.classList.add('error');
         status.textContent = err instanceof Error ? err.message : '전송하지 못했습니다. 잠시 후 다시 시도해 주세요.';
