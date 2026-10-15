@@ -9,7 +9,7 @@ const { active } = Astro.props;
 ---
 <header class="site-header">
   <div class="wrap bar">
-    <a class="brand" href="/">{site.name}</a>
+    <a class="brand" href="/"><img class="brand-mark" src="/favicon.svg" alt="" width="22" height="22" />{site.name}</a>
     <nav aria-label="Main">
       <ul class="links">
         {nav.map((n) => (
@@ -26,6 +26,10 @@ const { active } = Astro.props;
       </details>
     </nav>
   </div>
+  <div class="rail" aria-hidden="true">
+    <span class="rail-fill"></span>
+    <img class="rail-mark" src="/favicon.svg" alt="" width="22" height="22" />
+  </div>
 </header>
 
 <script>
@@ -33,6 +37,28 @@ const { active } = Astro.props;
   document.querySelectorAll('.menu a').forEach((a) =>
     a.addEventListener('click', () => (a.closest('details') as HTMLDetailsElement).removeAttribute('open')),
   );
+
+  // Once the page leaves the top, the brand logo fades out and the logo rides the bottom rule as page progress.
+  const header = document.querySelector<HTMLElement>('.site-header');
+  if (header) {
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const max = document.documentElement.scrollHeight - innerHeight;
+      const y = scrollY;
+      header.classList.toggle('scrolled', y > 0);
+      header.style.setProperty('--p', String(max > 0 ? Math.min(1, y / max) : 0));
+    };
+    const request = () => {
+      if (!queued) {
+        queued = true;
+        requestAnimationFrame(update);
+      }
+    };
+    update();
+    addEventListener('scroll', request, { passive: true });
+    addEventListener('resize', request);
+  }
 </script>
 
 <style>
@@ -42,12 +68,33 @@ const { active } = Astro.props;
     z-index: 10;
     background: color-mix(in srgb, var(--surface-100) 92%, transparent);
     backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--line);
+    --p: 0;
+  }
+  .rail { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); }
+  .rail-fill { position: absolute; left: 0; bottom: 0; width: 100%; height: 2px; background: var(--orange); transform: scaleX(var(--p)); transform-origin: left; }
+  .rail-mark {
+    position: absolute;
+    bottom: -11px;
+    left: calc(var(--p) * (100% - 22px));
+    width: 22px;
+    height: 22px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 250ms ease;
+  }
+  .brand-mark { width: 22px; margin-right: 8px; transition: opacity 250ms ease, filter 250ms ease, width 250ms ease, margin 250ms ease; }
+  .scrolled .brand-mark { width: 0; margin-right: 0; opacity: 0; filter: grayscale(1) brightness(0.6); }
+  .scrolled .rail-mark { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) {
+    .brand-mark, .rail-mark { transition: none; }
   }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-24); height: var(--header-h); }
-  .brand { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
+  .brand { display: inline-flex; align-items: center; font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
   ul { margin: 0; padding: 0; list-style: none; }
   .links { display: flex; gap: var(--space-24); }
+  nav a, .menu summary {
+    text-transform: uppercase;
+  }
   nav a {
     position: relative;
     display: inline-block;

@@ -88,3 +88,26 @@ a:hover { text-decoration-thickness: 2px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* Hero typing effect (see index.astro). Characters are wrapped by script, so these rules are global. */
+.t-char { opacity: 0; }
+.t-char.on { opacity: 1; }
+.t-pending::before { opacity: 0; }
+.t-pending.t-go::before { opacity: 1; }
+.t-end { position: relative; }
+.t-end::after {
+  content: '';
+  position: absolute;
+  right: -4px;
+  top: 0.2em;
+  bottom: 0.2em;
+  width: 3px;
+  background: var(--ink-muted);
+  opacity: 0.55;
+  animation: t-dim 1.6s ease-in-out infinite;
+}
+/* Fades gradually out and back in, instead of switching on and off. */
+@keyframes t-dim {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0; }
+}

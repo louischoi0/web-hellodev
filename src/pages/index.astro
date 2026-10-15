@@ -49,13 +49,66 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
         <li><strong>처음 2주는 무료입니다.</strong> 실제 업무를 함께 진행해 보고 계속할지 결정하실 수 있습니다.</li>
         <li><strong>프로젝트별로 계약합니다.</strong> 필요한 범위만큼 계약하고, 프로젝트가 끝나면 계약도 함께 끝납니다.</li>
       </ul>
+      <script is:inline>
+        // Hero points type in one after another on load; a grey caret then blinks after the last character.
+        // The text stays real DOM text; reduced-motion and no-JS visitors see it at once.
+        (function () {
+          var list = document.querySelector('.points');
+          if (!list || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+          var items = [];
+          Array.prototype.forEach.call(list.children, function (li) {
+            var chars = [];
+            (function walk(node) {
+              Array.prototype.slice.call(node.childNodes).forEach(function (n) {
+                if (n.nodeType === 3) {
+                  var frag = document.createDocumentFragment();
+                  Array.from(n.textContent).forEach(function (ch) {
+                    var s = document.createElement('span');
+                    s.className = 't-char';
+                    s.textContent = ch;
+                    frag.appendChild(s);
+                    chars.push(s);
+                  });
+                  n.parentNode.replaceChild(frag, n);
+                } else if (n.nodeType === 1) walk(n);
+              });
+            })(li);
+            li.classList.add('t-pending');
+            items.push({ li: li, chars: chars });
+          });
+          var PER_CHAR = 12, GAP = 180, START = 250, t = START;
+          items.forEach(function (it) { it.start = t; t += it.chars.length * PER_CHAR + GAP; });
+          var t0 = performance.now();
+          function frame(now) {
+            var el = now - t0, done = true;
+            items.forEach(function (it) {
+              var n = Math.min(it.chars.length, Math.max(0, Math.floor((el - it.start) / PER_CHAR)));
+              if (el >= it.start) it.li.classList.add('t-go');
+              for (var i = 0; i < n; i++) it.chars[i].classList.add('on');
+              if (n < it.chars.length) done = false;
+            });
+            if (done) {
+              var tail = items[items.length - 1].chars;
+              if (tail.length) tail[tail.length - 1].classList.add('t-end');
+              return;
+            }
+            requestAnimationFrame(frame);
+          }
+          requestAnimationFrame(frame);
+          // Safety net: never leave text hidden.
+          setTimeout(function () {
+            list.querySelectorAll('.t-char').forEach(function (c) { c.classList.add('on'); });
+            list.querySelectorAll('.t-pending').forEach(function (l) { l.classList.add('t-go'); });
+          }, 9000);
+        })();
+      </script>
       <div class="actions">
         <a class="btn btn-primary" href="/projects/">포트폴리오 보기 <span class="chev" aria-hidden="true">›</span></a>
         <a class="btn btn-secondary" href="#contact">프로젝트 문의</a>
       </div>
     </div>
     <svg class="motif" viewBox="0 0 168 48" aria-hidden="true">
-      {[0, 1, 2, 3, 4].map((i) => <polyline points={`${8 + i * 32},8 ${24 + i * 32},24 ${8 + i * 32},40`} />)}
+      {[0, 1, 2, 3, 4].map((i) => <polyline style={`--i: ${i}`} points={`${8 + i * 32},8 ${24 + i * 32},24 ${8 + i * 32},40`} />)}
     </svg>
   </section>
 
@@ -171,6 +224,13 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
     stroke-linecap: square;
     stroke-linejoin: miter;
   }
+  /* The chevrons turn navy one after another, left to right, then the wave repeats. */
+  .motif polyline { animation: chev-wave 3s ease-in-out infinite; animation-delay: calc(var(--i) * 300ms); }
+  @keyframes chev-wave {
+    0%, 30%, 100% { stroke: var(--orange); }
+    10%, 20% { stroke: var(--navy); }
+  }
+  @media (prefers-reduced-motion: reduce) { .motif polyline { animation: none; } }
   @media (max-width: 639px) { .motif { display: none; } }
 
 
