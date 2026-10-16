@@ -4,8 +4,9 @@ export const site = {
   description: '헬로월드는 서비스의 설계부터 운영까지 맡는 소프트웨어 개발 회사입니다.',
   // Business details shown in the footer.
   business: {
-    registration: '000-00-00000',
-    address: '서울특별시',
+    representative: '최욱진',
+    registration: '666-53-00669',
+    address: '경기도 파주시 술이홀로 409',
   },
 };
 
