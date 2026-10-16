@@ -63,6 +63,7 @@ const types = {
   '.pdf': 'application/pdf',
   '.woff2': 'font/woff2',
   '.txt': 'text/plain; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
 };
 
 const SIZES = ['1~10명', '11~50명', '51~200명', '201~1000명', '1000명 이상'];

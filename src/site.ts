@@ -2,6 +2,9 @@
 export const site = {
   name: '헬로월드',
   description: '헬로월드는 서비스의 설계부터 운영까지 맡는 소프트웨어 개발 회사입니다.',
+  // Production origin, no trailing slash (e.g. 'https://example.kr').
+  // Canonical links, og:url and sitemap.xml are emitted only when this is set.
+  url: '',
   // Business details shown in the footer.
   business: {
     representative: '최욱진',

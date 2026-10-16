@@ -2,12 +2,14 @@
 interface Props {
   eyebrow: string;
   title: string;
+  // The page's main heading uses 1; it keeps the h2 look.
+  level?: 1 | 2;
 }
-const { eyebrow, title } = Astro.props;
+const { eyebrow, title, level = 2 } = Astro.props;
 ---
 <header class="section-header">
   <p class="label eyebrow">{eyebrow}</p>
-  <h2>{title}</h2>
+  {level === 1 ? <h1 class="h2">{title}</h1> : <h2>{title}</h2>}
   <slot />
 </header>
 

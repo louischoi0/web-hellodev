@@ -12,6 +12,17 @@ interface Props {
 
 const { title, description = site.description, active } = Astro.props;
 const pageTitle = title ? `${title} · ${site.name}` : site.name;
+const canonical = site.url ? new URL(Astro.url.pathname, site.url).href : undefined;
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.name,
+  description: site.description,
+  ...(site.url && { url: site.url }),
+  founder: { '@type': 'Person', name: site.business.representative },
+  taxID: site.business.registration,
+  address: { '@type': 'PostalAddress', streetAddress: site.business.address, addressCountry: 'KR' },
+};
 ---
 <!doctype html>
 <html lang="ko">
@@ -21,6 +32,16 @@ const pageTitle = title ? `${title} · ${site.name}` : site.name;
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content={description} />
     <title>{pageTitle}</title>
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#1a2b5f" />
+    <script type="application/ld+json" set:html={JSON.stringify(organization)} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
