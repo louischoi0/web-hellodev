@@ -115,7 +115,10 @@ async function handleInquiry(req, res) {
 
 function serveFile(req, res) {
   const url = new URL(req.url ?? '/', 'http://localhost');
-  let path = normalize(decodeURIComponent(url.pathname));
+  // A malformed percent-escape must answer 400, not throw and take the process down.
+  let path;
+  try { path = normalize(decodeURIComponent(url.pathname)); }
+  catch { res.writeHead(400); return res.end(); }
   let file = join(root, path);
   if (!file.startsWith(root)) { res.writeHead(403); return res.end(); }
   if (existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
