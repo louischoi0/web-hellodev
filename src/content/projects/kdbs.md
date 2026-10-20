@@ -1,6 +1,6 @@
 ---
-title: KDBS — OLTP 데이터베이스 엔진
-outcome: 애플리케이션이 매번 코드로 지키던 데이터 규칙을 스키마에 한 번 선언하면 엔진이 강제하는 OLTP 데이터베이스 엔진을 처음부터 설계하고 구현했습니다.
+title: KDBS — 모던 소프트웨어를 위한 OLTP 데이터베이스
+outcome: 극단적인 범용성 대신 모던 소프트웨어의 대부분의 워크로드를 빠르게 처리하는 데 집중한 OLTP 데이터베이스입니다.
 stack: [C++20, Coroutines, B+ Tree, MVCC, WAL]
 year: 2026
 order: 1
